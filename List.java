@@ -29,40 +29,103 @@ public class List {
 
     /** GIVE Adds a CharData object with the given character to the beginning of this list. */
     public void addFirst(char chr) {
-        // Your code goes here
+        CharData newChr = new CharData(chr);
+        Node newNode = new Node(newChr, first);
+        first = newNode;
+        size++;
     }
     
     /** GIVE Textual representation of this list. */
     public String toString() {
-        // Your code goes here
+        StringBuilder str = new StringBuilder();
+        str.append("(");
+        Node currNode = first;
+        while(currNode!=null)
+        {
+            str.append("(");
+            str.append(currNode.cp.toString());
+            str.append(")");
+            currNode = currNode.next;
+        }
+        str.append(")");
+        return str.toString();
     }
 
     /** Returns the index of the first CharData object in this list
      *  that has the same chr value as the given char,
      *  or -1 if there is no such object in this list. */
     public int indexOf(char chr) {
-        // Your code goes here
+        int returnNum = -1;
+        Node currNode = first;
+        while(currNode!=null)
+        {
+            if (currNode.cp.chr == chr)
+            {
+                returnNum = currNode.cp.count;
+            }
+            currNode = currNode.next;
+        }
+        return returnNum;
     }
 
     /** If the given character exists in one of the CharData objects in this list,
      *  increments its counter. Otherwise, adds a new CharData object with the
      *  given chr to the beginning of this list. */
     public void update(char chr) {
-        // Your code goes here
+        Node currNode = first;
+        if (indexOf(chr) != -1)
+        {
+            for (int i =0 ; i< indexOf(chr) ; i++)
+            {
+                currNode = currNode.next;
+            }
+            currNode.cp.count++;
+        }
+        else
+        {
+            addFirst(chr);
+        }
     }
 
     /** GIVE If the given character exists in one of the CharData objects
      *  in this list, removes this CharData object from the list and returns
      *  true. Otherwise, returns false. */
     public boolean remove(char chr) {
-        // Your code goes here
+        Node currNode = first;
+        if (indexOf(chr) != -1)
+        {
+            for (int i =0 ; i< indexOf(chr)-1 ; i++)
+            {
+                currNode = currNode.next;
+            }
+            Node after = currNode.next;
+            currNode.next = after.next;
+            size--;
+            return true;
+        }
+        else
+        {
+            addFirst(chr);
+            return false;
+        }
     }
 
     /** Returns the CharData object at the specified index in this list. 
      *  If the index is negative or is greater than the size of this list, 
      *  throws an IndexOutOfBoundsException. */
     public CharData get(int index) {
-        // Your code goes here
+        if (index < 0 || index >= size)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+        else{
+            Node currNode = first;
+                for (int i =0 ; i< index ; i++)
+                {
+                    currNode = currNode.next;
+                }
+            return currNode.cp;
+        }
     }
 
     /** Returns an array of CharData objects, containing all the CharData objects in this list. */

@@ -39,12 +39,34 @@ public class LanguageModel {
     // Computes and sets the probabilities (p and cp fields) of all the
 	// characters in the given list. */
 	public void calculateProbabilities(List probs) {				
-		// Your code goes here
+		double omega = 0;
+        for (int i = 0 ; i<probs.getSize() ; i++)
+        {
+            omega = omega + probs.get(i).count;
+        }
+        double sumProb = 0 ;
+        for(int j = 0; j<probs.getSize() ; j++)
+        {
+            probs.get(j).p = probs.get(j).count/omega;
+            sumProb = sumProb + probs.get(j).p;
+            probs.get(j).cp = sumProb;
+        }
+        
+
 	}
 
     // Returns a random character from the given probabilities list.
 	public char getRandomChar(List probs) {
-		// Your code goes here
+        double rand = this.randomGenerator.nextDouble();
+        ListIterator listIterator = probs.listIterator(0);
+        while (listIterator.hasNext()) {
+            CharData charData = listIterator.next();
+            if (charData.cp > rand) {
+                return charData.chr;
+            }
+        }
+        return probs.get(probs.getSize()).chr;
+        
 	}
 
     /**
@@ -55,7 +77,21 @@ public class LanguageModel {
 	 * @return the generated text
 	 */
 	public String generate(String initialText, int textLength) {
-		// Your code goes here
+        if (initialText.length() < this.windowLength || initialText.length() >= textLength) {
+            return initialText;
+        }
+        String newTxt = initialText;
+        String window = initialText.substring(initialText.length() - windowLength);
+        while (newTxt.length() - windowLength < textLength) {
+            if (CharDataMap.containsKey(window)) {
+                char chr = getRandomChar(CharDataMap.get(window));
+                newTxt += chr;
+                window = window.substring(1) + chr;
+            } else {
+                return newTxt;
+            }
+        }
+        return newTxt;
 	}
 
     /** Returns a string representing the map of this language model. */
