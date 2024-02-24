@@ -5,6 +5,7 @@
  *  mention the existence of the Node objects). */
 public class List {
 
+
     // Points to the first node in this list
     private Node first;
 
@@ -39,7 +40,7 @@ public class List {
     public String toString() {
         if(size==0)
             return "()";
-        StringBuilder str = new StringBuilder();
+        StringBuilder str = new StringBuilder("(");
         Node currNode = first;
         while(currNode!=null)
         {
