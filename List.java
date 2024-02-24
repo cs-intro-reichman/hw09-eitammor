@@ -37,17 +37,16 @@ public class List {
     
     /** GIVE Textual representation of this list. */
     public String toString() {
+        if(size==0)
+            return "()";
         StringBuilder str = new StringBuilder();
-        str.append("(");
         Node currNode = first;
         while(currNode!=null)
         {
-            str.append("(");
-            str.append(currNode.cp.toString());
-            str.append(")");
+            str.append(currNode.cp.toString()).append(" ");
             currNode = currNode.next;
         }
-        str.append(")");
+        str.deleteCharAt(str.length() - 1).append(")");
         return str.toString();
     }
 
@@ -55,17 +54,18 @@ public class List {
      *  that has the same chr value as the given char,
      *  or -1 if there is no such object in this list. */
     public int indexOf(char chr) {
-        int returnNum = -1;
+        int returnNum = 0;
         Node currNode = first;
         while(currNode!=null)
         {
             if (currNode.cp.chr == chr)
             {
-                returnNum = currNode.cp.count;
+                return returnNum;
             }
             currNode = currNode.next;
+            returnNum++;
         }
-        return returnNum;
+        return -1;
     }
 
     /** If the given character exists in one of the CharData objects in this list,
